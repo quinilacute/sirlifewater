@@ -1,8 +1,24 @@
-export default function Home() {
+// import React from "react";
+import Delivery from "../components/Dev";
+import Hero from "./Home/Hero";
+import Testi from "./Home/Testi";
+import Why from "./Home/Why";
+import News from "../components/News";
+import Footer from "../components/Footer";
+
+function Home() {
+  
+
   return (
-    <div className="p-8 text-center">
-      <h1 className="text-4xl font-bold text-blue-600">Welcome to SirLife Water 💧</h1>
-      <p className="mt-4 text-gray-600">Pure. Refreshing. Delivered to your doorstep.</p>
+    <div className="flex-col h-screen transition-all duration-700 bg-green">
+      <Hero />
+      <Why />
+     <Testi />
+     <Delivery />
+     <News />
+     <Footer />
     </div>
   );
 }
+
+export default Home;

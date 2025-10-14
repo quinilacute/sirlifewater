@@ -1,10 +1,23 @@
-export default function About() {
+import Con from "./About/Contact";
+import Hero from "./About/Hero";
+import Map from "./About/Map";
+import Miss from "./About/Mission";
+import Video from "./About/Video";
+import News from "../components/News";
+import Footer from "../components/Footer";
+
+
+function About() {
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold">About Us</h1>
-      <p className="mt-4 text-gray-600">
-        SirLife Water is committed to providing clean and refreshing bottled water with efficient delivery.
-      </p>
+    <div >
+      <Hero />
+      <Miss />
+      <Video />
+      <Map />
+      <Con />
+      <News />
+      <Footer />
     </div>
   );
 }
+export default About;

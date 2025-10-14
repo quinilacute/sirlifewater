@@ -14,7 +14,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
-    <div className="min-h-screen bg-white text-gray-800">
+    <div className="min-h-screen bg-white text-red-800">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
