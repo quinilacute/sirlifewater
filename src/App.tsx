@@ -1,9 +1,10 @@
+// App.tsx
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Products from "./pages/Products";
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
+import Cart from "./pages/Cart/Cart";
+import Checkout from "./pages/checkout/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import LoginSignup from "./pages/LoginSignup";
 import Dashboard from "./pages/Dashboard";
@@ -27,10 +28,7 @@ function App() {
         <Route path="/delivery" element={<DeliveryMap />} />
         <Route path="/faq" element={<FAQ />} />
 
-
-         {/* 🔒 Protected routes */}
-        
-
+        {/* 🔒 Protected route for Checkout */}
         <Route
           path="/checkout"
           element={

@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "50cl Bottle Water",
+    "description": "Clean spring water in 50cl plastic bottle",
+    "price": 100,
+    "size": "50cl",
+    "image": "/50cl.png"
+  },
+  {
+    "id": 2,
+    "name": "75cl Bottle Water",
+    "description": "Clean spring water in 75cl bottle",
+    "price": 150,
+    "size": "75cl",
+    "image": "/75cl.png"
+  },
+  {
+    "id": 3,
+    "name": "Sachet Water",
+    "description": "Bag of 20 sachets",
+    "price": 300,
+    "size": "20 sachets",
+    "image": "/sachet.png"
+  },
+  {
+    "id": 4,
+    "name": "Ice Block",
+    "description": "Large ice block for cooling",
+    "price": 200,
+    "size": "Large",
+    "image": "/iceblock.png"
+  },
+  {
+    "id": 5,
+    "name": "Dispenser Refill",
+    "description": "Refill for dispenser",
+    "price": 500,
+    "size": "Refill",
+    "image": "/dispenser-refill.png"
+  },
+  {
+    "id": 6,
+    "name": "Dispenser (Full)",
+    "description": "Full dispenser set with container",
+    "price": 3500,
+    "size": "Full set",
+    "image": "/dispenser-full.png"
+  }
+]

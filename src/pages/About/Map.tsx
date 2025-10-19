@@ -1,22 +1,13 @@
-import React from "react";
+import Distance from "../../components/Distance"; // adjust relative path
 
 function Map() {
   return (
     <section className="w-full bg-white py-16 px-6 md:px-20">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-blue-700">
-          Find Us 🌍
-        </h2>
-        <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
-          Visit our office or distribution point. We’re always happy to connect and
-          share more about how SirLifeWater delivers clean, sustainable water solutions.
-        </p>
-      </div>
-
+      {/* your map section */}
       <div className="w-full h-[400px] rounded-2xl overflow-hidden shadow-lg border">
         <iframe
           title="SirLifeWater Location"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.812257... (replace with your actual link)"
+          src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&q=Itu,Akwa+Ibom,Nigeria`}
           width="100%"
           height="100%"
           style={{ border: 0 }}
@@ -24,6 +15,11 @@ function Map() {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         ></iframe>
+      </div>
+
+      {/* delivery calculator below */}
+      <div className="mt-12">
+        <Distance />
       </div>
     </section>
   );

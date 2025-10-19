@@ -1,16 +1,19 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import './index.css'
-import App from './App.tsx'
-import {AuthProvider} from "./context/AuthContext.tsx"
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext"; // ✅ import AuthProvider
+import "./index.css";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
     <BrowserRouter basename="/sirlifewater">
-      <AuthProvider>
-        <App />
+      <AuthProvider>          {/* ✅ AuthProvider wraps everything */}
+        <CartProvider>        {/* ✅ Cart context also available */}
+          <App />             {/* ✅ Navbar and Routes inside */}
+        </CartProvider>
       </AuthProvider>
     </BrowserRouter>
-  </StrictMode>
-)
+  </React.StrictMode>
+);
