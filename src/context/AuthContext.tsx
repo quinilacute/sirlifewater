@@ -1,34 +1,36 @@
 // src/context/AuthContext.tsx
-import { createContext, useContext, useState, useEffect } from "react";
-import type { ReactNode } from "react";
-import { 
-  getAuth, 
-  onAuthStateChanged, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut 
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+  updateProfile,
+  type User as FirebaseUser,
 } from "firebase/auth";
-import type { User as FirebaseUser } from "firebase/auth";
+import app from "../firebase"; // your Firebase initialization
 
-import app from "../firebase"; // your Firebase initialization file
-
-// 1️⃣ Define the Auth context type
+// 🧩 AuthContext Type
 interface AuthContextType {
   user: FirebaseUser | null;
-  signup: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string, name?: string, number?: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
-// 2️⃣ Create Context
+// ⚙️ Create Context
 const AuthContext = createContext<AuthContextType | null>(null);
 
-// 3️⃣ Auth Provider component
+// 🌟 Auth Provider
 export function AuthProvider({ children }: { children: ReactNode }) {
   const auth = getAuth(app);
   const [user, setUser] = useState<FirebaseUser | null>(null);
 
-  // 4️⃣ Listen for Firebase Auth state changes
+  // 🔄 Watch user state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
@@ -36,33 +38,52 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => unsubscribe();
   }, [auth]);
 
-  // 5️⃣ Auth methods
-  const signup = async (email: string, password: string) => {
-    await createUserWithEmailAndPassword(auth, email, password);
+  // 🆕 Signup
+  const signup = async (email: string, password: string, name?: string, number?: string) => {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const currentUser = userCredential.user;
+
+    // Update displayName and optionally phone number
+    if (name) {
+      await updateProfile(currentUser, { displayName: name });
+    }
+
+    // Optionally store number in localStorage (frontend only)
+    if (number) {
+      localStorage.setItem("userPhone", number);
+    }
   };
 
+  // 🔐 Login
   const login = async (email: string, password: string) => {
     await signInWithEmailAndPassword(auth, email, password);
   };
 
-  const logout = async () => {
-    await signOut(auth);
+  // 🌍 Login with Google
+  const loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
   };
 
-  // 6️⃣ Provide context values
+  // 🚪 Logout
+  const logout = async () => {
+    await signOut(auth);
+    localStorage.removeItem("userPhone");
+  };
+
+  // 💡 Context values
   return (
-    <AuthContext.Provider value={{ user, signup, login, logout }}>
+    <AuthContext.Provider value={{ user, signup, login, loginWithGoogle, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-// 7️⃣ Hook to use Auth in components
+// 🧠 Hook for components
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 }
 
-// ✅ Keep export default at the bottom (your style)
 export default AuthContext;

@@ -1,137 +1,137 @@
-import React, { useState } from "react";
+// src/pages/checkout/PayMetFo.tsx
+import { useState } from "react";
+import { PaystackButton } from "react-paystack";
+import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 
-interface PaymentMethodProps {
-  totalAmount: number;
-  onProceed: () => void;
-}
-
-const PaymentMethod: React.FC<PaymentMethodProps> = ({ totalAmount, onProceed }) => {
-  const [method, setMethod] = useState<"card" | "transfer" | "">("");
-  const [cardInfo, setCardInfo] = useState({
+function PayMetFo() {
+  const { getTotalPrice, clearCart } = useCart();
+  const { user } = useAuth();
+  const [cardDetails, setCardDetails] = useState({
+    name: "",
     number: "",
     expiry: "",
     cvv: "",
   });
 
-  const handleCardChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCardInfo((prev) => ({ ...prev, [name]: value }));
+  const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY;
+  const amount = getTotalPrice() * 100;
+  const email = user?.email || "guest@example.com";
+  const isLoggedIn = !!user;
+
+  const handlePaystackSuccessAction = () => {
+    clearCart();
+    alert("Payment Successful!");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleAddCard = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!method) {
-      alert("Please select a payment method.");
+    if (!isLoggedIn) return alert("Please log in to save your card.");
+    if (!cardDetails.name || !cardDetails.number || !cardDetails.expiry || !cardDetails.cvv) {
+      alert("Please fill all card fields!");
       return;
     }
+    localStorage.setItem("savedCard", JSON.stringify(cardDetails));
+    alert("Card added successfully!");
+  };
 
-    if (method === "card") {
-      if (!cardInfo.number || !cardInfo.expiry || !cardInfo.cvv) {
-        alert("Please complete your card details.");
-        return;
-      }
-    }
-
-    // ✅ Future integration: Paystack or PayPal API call can go here
-    onProceed();
+  const componentProps = {
+    email,
+    amount,
+    publicKey,
+    text: "Pay with Paystack",
+    onSuccess: handlePaystackSuccessAction,
+    onClose: () => alert("Payment closed!"),
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-      <h2 className="text-xl font-bold text-blue-800 mb-4">Payment Method</h2>
+    <div>
+      <h2 className="text-md font-bold text-gray-700 uppercase mb-2">
+        Payment Methods
+      </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Select Payment Option */}
-        <div className="flex flex-col space-y-2">
-          <label className="flex items-center space-x-3">
-            <input
-              type="radio"
-              name="payment"
-              value="card"
-              checked={method === "card"}
-              onChange={() => setMethod("card")}
-              className="accent-blue-600"
-            />
-            <span>Pay with Card (Visa / MasterCard)</span>
-          </label>
+      <p className="text-xs text-gray-500 mb-3">
+        Choose how you want to pay for your order
+      </p>
 
-          <label className="flex items-center space-x-3">
-            <input
-              type="radio"
-              name="payment"
-              value="transfer"
-              checked={method === "transfer"}
-              onChange={() => setMethod("transfer")}
-              className="accent-blue-600"
-            />
-            <span>Pay via Transfer (Paystack / Local Bank / USSD)</span>
-          </label>
-        </div>
+      {/* Paystack */}
+      <div className="mb-6">
+        {isLoggedIn ? (
+          <PaystackButton
+            {...componentProps}
+            className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded-md w-full"
+          />
+        ) : (
+          <button
+            disabled
+            className="bg-gray-300 text-gray-600 font-semibold px-4 py-2 rounded-md w-full cursor-not-allowed"
+            title="Login to use Paystack"
+          >
+            Pay with Paystack (Login required)
+          </button>
+        )}
+      </div>
 
-        {/* Card Details Form */}
-        {method === "card" && (
-          <div className="mt-4 space-y-3 border-t pt-4">
+      {/* Add Card - Always visible */}
+      <div className="mt-2">
+        <h3 className="font-semibold mb-2 text-sm">Add Card</h3>
+        <form onSubmit={handleAddCard} className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Cardholder Name"
+            value={cardDetails.name}
+            onChange={(e) =>
+              setCardDetails({ ...cardDetails, name: e.target.value })
+            }
+            className="border rounded-md p-2 text-sm"
+          />
+          <input
+            type="text"
+            placeholder="Card Number"
+            maxLength={16}
+            value={cardDetails.number}
+            onChange={(e) =>
+              setCardDetails({ ...cardDetails, number: e.target.value })
+            }
+            className="border rounded-md p-2 text-sm"
+          />
+          <div className="flex gap-3">
             <input
               type="text"
-              name="number"
-              placeholder="Card Number"
-              value={cardInfo.number}
-              onChange={handleCardChange}
-              className="w-full border rounded-lg p-2 focus:outline-blue-600"
+              placeholder="MM/YY"
+              value={cardDetails.expiry}
+              onChange={(e) =>
+                setCardDetails({ ...cardDetails, expiry: e.target.value })
+              }
+              className="border rounded-md p-2 w-1/2 text-sm"
             />
-            <div className="flex gap-2">
-              <input
-                type="text"
-                name="expiry"
-                placeholder="MM/YY"
-                value={cardInfo.expiry}
-                onChange={handleCardChange}
-                className="w-1/2 border rounded-lg p-2 focus:outline-blue-600"
-              />
-              <input
-                type="text"
-                name="cvv"
-                placeholder="CVV"
-                value={cardInfo.cvv}
-                onChange={handleCardChange}
-                className="w-1/2 border rounded-lg p-2 focus:outline-blue-600"
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="CVV"
+              maxLength={3}
+              value={cardDetails.cvv}
+              onChange={(e) =>
+                setCardDetails({ ...cardDetails, cvv: e.target.value })
+              }
+              className="border rounded-md p-2 w-1/2 text-sm"
+            />
           </div>
-        )}
 
-        {/* Transfer Info */}
-        {method === "transfer" && (
-          <div className="mt-4 border-t pt-4 space-y-2 text-gray-700">
-            <p className="text-sm">
-              Kindly make your transfer to the account below:
-            </p>
-            <div className="bg-gray-100 p-3 rounded-lg">
-              <p className="font-semibold">Sirlife Water Nigeria Ltd</p>
-              <p>GTBank — <span className="font-bold">0456789021</span></p>
-            </div>
-            <p className="text-xs text-gray-500 mt-2">
-              After payment, click “Proceed” to confirm your order. Your
-              payment will be verified automatically or manually by our system.
-            </p>
-          </div>
-        )}
-
-        {/* Total and Proceed Button */}
-        <div className="mt-6 flex justify-between items-center">
-          <p className="text-lg font-bold text-blue-800">
-            Total: ₦{totalAmount.toLocaleString()}
-          </p>
           <button
             type="submit"
-            className="bg-blue-700 text-white px-6 py-2 rounded-lg hover:bg-blue-800 transition"
+            disabled={!isLoggedIn}
+            className={`${
+              isLoggedIn
+                ? "bg-indigo-900 hover:bg-indigo-800 text-white"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            } font-semibold px-4 py-2 rounded-md transition`}
           >
-            Proceed
+            Save Card
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
-};
+}
 
-export default PaymentMethod;
+export default PayMetFo;

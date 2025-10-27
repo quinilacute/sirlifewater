@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-function Navbar() {
+
+function Nav() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
 
@@ -113,4 +114,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Nav;

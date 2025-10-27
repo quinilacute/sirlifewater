@@ -1,14 +1,96 @@
-export default function Checkout() {
-  return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold">Checkout</h1>
-      <p className="mt-4 text-gray-600">
-        Enter your delivery and payment details to complete your order.
-      </p>
+// src/pages/checkout/UserDetailsForm.tsx
+import React, { useEffect, useState } from "react";
 
-      <div className="mt-8 border-t border-gray-200 pt-4">
-        <p>Checkout form will go here (address, payment method, confirmation).</p>
+interface UserInfo {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+}
+
+const UserDetailsForm: React.FC = () => {
+  const [user, setUser] = useState<UserInfo>({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+  });
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("sirlife_user");
+    if (savedUser) {
+      const userData = JSON.parse(savedUser);
+      setUser(userData);
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUser((prev) => ({ ...prev, [name]: value }));
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-md font-bold text-gray-700 uppercase">
+          Buyer Info
+        </h2>
+        {!isLoggedIn && (
+          <p className="text-sm text-indigo-700 font-semibold cursor-pointer">
+            Signup Here
+          </p>
+        )}
       </div>
+
+      <form className="grid grid-cols-1 gap-3">
+        <input
+          type="text"
+          name="name"
+          placeholder="First Name"
+          value={user.name}
+          onChange={handleChange}
+          className="border rounded-md p-2 text-sm"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={user.email}
+          onChange={handleChange}
+          className="border rounded-md p-2 text-sm"
+        />
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone Number"
+          value={user.phone}
+          onChange={handleChange}
+          className="border rounded-md p-2 text-sm"
+        />
+        <input
+          type="text"
+          name="address"
+          placeholder="Address"
+          value={user.address}
+          onChange={handleChange}
+          className="border rounded-md p-2 text-sm"
+        />
+        <input
+          type="text"
+          name="city"
+          placeholder="City / State"
+          value={user.city}
+          onChange={handleChange}
+          className="border rounded-md p-2 text-sm"
+        />
+      </form>
     </div>
   );
-}
+};
+
+export default UserDetailsForm;

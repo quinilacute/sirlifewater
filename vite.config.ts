@@ -3,12 +3,6 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [['babel-plugin-react-compiler']],
-      },
-    }),
-  ],
-  base: '/sirlifewater/', 
+  plugins: [react()],
+  base: '/sirlifewater/', // You can remove this if you’re not deploying to GitHub Pages
 })

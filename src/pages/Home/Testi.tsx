@@ -1,9 +1,10 @@
-import { Star } from "lucide-react";
+import React from "react";import { Star } from "lucide-react";
 
 function Testi() {
   const testimonials = [
     {
-      name: "Grace Williams",
+      name:
+       "Grace Williams",
       role: "Lagos, Nigeria",
       comment:
         "SirLifeWater has completely changed the way my family drinks water. It’s always fresh and crystal clear!",

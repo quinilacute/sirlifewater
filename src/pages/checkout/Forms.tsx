@@ -1,5 +1,6 @@
+// src/pages/checkout/UserDetailsForm.tsx
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { getDeliveryCost } from "../../utils/getDeliveryCost";
 
 interface UserInfo {
   name: string;
@@ -9,8 +10,11 @@ interface UserInfo {
   city: string;
 }
 
-const UserDetailsForm: React.FC = () => {
-  const navigate = useNavigate();
+interface UserDetailsFormProps {
+  onDeliveryCostChange: (cost: number, distance: string) => void;
+}
+
+const UserDetailsForm: React.FC<UserDetailsFormProps> = ({ onDeliveryCostChange }) => {
   const [user, setUser] = useState<UserInfo>({
     name: "",
     email: "",
@@ -20,8 +24,8 @@ const UserDetailsForm: React.FC = () => {
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // ✅ Load user data (simulate pulling from localStorage or AuthContext)
   useEffect(() => {
     const savedUser = localStorage.getItem("sirlife_user");
     if (savedUser) {
@@ -36,114 +40,89 @@ const UserDetailsForm: React.FC = () => {
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    localStorage.setItem("sirlife_user", JSON.stringify(user));
-    alert("Details saved successfully ✅");
-  };
+  const handleCalculateDelivery = async () => {
+    if (!user.address && !user.city) {
+      alert("Please enter your address and city.");
+      return;
+    }
 
-  const handleLoginRedirect = () => {
-    navigate("/login");
+    const fullAddress = `${user.address}, ${user.city}`;
+    setLoading(true);
+
+    try {
+      const { distanceText, deliveryCost } = await getDeliveryCost(fullAddress);
+      onDeliveryCostChange(deliveryCost, distanceText);
+      alert(`Distance: ${distanceText}\nDelivery Cost: ₦${deliveryCost.toFixed(2)}`);
+    } catch (error) {
+      console.error(error);
+      alert("Unable to calculate delivery cost. Try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 mb-6 border border-gray-200">
-      <h2 className="text-xl font-bold text-blue-800 mb-4">Customer Details</h2>
-
-      {!isLoggedIn ? (
-        <div className="text-center py-4">
-          <p className="text-gray-600 mb-3">
-            Please sign up or log in to continue your checkout.
+    <div>
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-md font-bold text-gray-700 uppercase">Buyer Info</h2>
+        {!isLoggedIn && (
+          <p className="text-sm text-indigo-700 font-semibold cursor-pointer">
+            Signup Here
           </p>
-          <button
-            onClick={handleLoginRedirect}
-            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
-          >
-            Sign Up / Log In
-          </button>
-        </div>
-      ) : (
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={user.name}
-              onChange={handleChange}
-              className="w-full border rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter your full name"
-            />
-          </div>
+        )}
+      </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email Address
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={user.email}
-              onChange={handleChange}
-              className="w-full border rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter your email"
-            />
-          </div>
+      <form className="grid grid-cols-1 gap-3">
+        <input
+          type="text"
+          name="name"
+          placeholder="First Name"
+          value={user.name}
+          onChange={handleChange}
+          className="border rounded-md p-2 text-sm"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={user.email}
+          onChange={handleChange}
+          className="border rounded-md p-2 text-sm"
+        />
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone Number"
+          value={user.phone}
+          onChange={handleChange}
+          className="border rounded-md p-2 text-sm"
+        />
+        <input
+          type="text"
+          name="address"
+          placeholder="Address"
+          value={user.address}
+          onChange={handleChange}
+          className="border rounded-md p-2 text-sm"
+        />
+        <input
+          type="text"
+          name="city"
+          placeholder="City / State"
+          value={user.city}
+          onChange={handleChange}
+          className="border rounded-md p-2 text-sm"
+        />
+      </form>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              value={user.phone}
-              onChange={handleChange}
-              className="w-full border rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-400"
-              placeholder="e.g. +234 801 234 5678"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              City / Location
-            </label>
-            <input
-              type="text"
-              name="city"
-              value={user.city}
-              onChange={handleChange}
-              className="w-full border rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-400"
-              placeholder="e.g. Lagos, Abuja"
-            />
-          </div>
-
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Delivery Address
-            </label>
-            <input
-              type="text"
-              name="address"
-              value={user.address}
-              onChange={handleChange}
-              className="w-full border rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-400"
-              placeholder="Street name, house number, landmark"
-            />
-          </div>
-
-          <div className="md:col-span-2 flex justify-end mt-4">
-            <button
-              type="button"
-              onClick={handleSave}
-              className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition"
-            >
-              Save Details
-            </button>
-          </div>
-        </form>
-      )}
+      <button
+        type="button"
+        onClick={handleCalculateDelivery}
+        disabled={loading}
+        className="mt-4 bg-indigo-900 text-white py-2 rounded-md w-full hover:bg-indigo-800 transition"
+      >
+        {loading ? "Calculating..." : "Calculate Delivery Cost"}
+      </button>
     </div>
   );
 };
