@@ -1,10 +1,10 @@
 // import React from "react";
-import Delivery from "../components/Dev";
-import Hero from "./Home/Hero";
-import Testi from "./Home/Testi";
-import Why from "./Home/Why";
-import News from "../components/News";
-import Footer from "../components/Footer";
+import Delivery from "../../components/Dev";
+import Hero from "../Home/Hero";
+import Testi from "../Home/Testi";
+import Why from "../Home/Why";
+import News from "../../components/News";
+import Footer from "../../components/Footer";
 
 function Home() {
   

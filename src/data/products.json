@@ -4,11 +4,19 @@
     "name": "50cl Bottle Water",
     "description": "Clean spring water in 50cl plastic bottle",
     "price": 100,
-    "size": "50cl",
+    "size": "35cl",
     "image": "/50cl.png"
   },
   {
     "id": 2,
+    "name": "50cl Bottle Water",
+    "description": "Clean spring water in 50cl plastic bottle",
+    "price": 100,
+    "size": "50cl",
+    "image": "/50cl.png"
+  },
+  {
+    "id": 3,
     "name": "75cl Bottle Water",
     "description": "Clean spring water in 75cl bottle",
     "price": 150,
@@ -16,7 +24,7 @@
     "image": "/75cl.png"
   },
   {
-    "id": 3,
+    "id": 4,
     "name": "Sachet Water",
     "description": "Bag of 20 sachets",
     "price": 300,
@@ -24,7 +32,7 @@
     "image": "/sachet.png"
   },
   {
-    "id": 4,
+    "id": 5,
     "name": "Ice Block",
     "description": "Large ice block for cooling",
     "price": 200,
@@ -32,19 +40,27 @@
     "image": "/iceblock.png"
   },
   {
-    "id": 5,
-    "name": "Dispenser Refill",
+    "id": 6,
+    "name": "19Ltr Dispenser Refill",
     "description": "Refill for dispenser",
     "price": 500,
     "size": "Refill",
     "image": "/dispenser-refill.png"
   },
   {
-    "id": 6,
-    "name": "Dispenser (Full)",
+    "id": 7,
+    "name": "19Ltr Dispenser (Full)",
     "description": "Full dispenser set with container",
     "price": 3500,
     "size": "Full set",
     "image": "/dispenser-full.png"
+  },
+  {
+    "id": 8,
+    "name": "Customised",
+    "description": "Customised water for occasions and on order",
+    "price": 0,
+    "size": "On order",
+    "image": "/customised-sample"
   }
 ]

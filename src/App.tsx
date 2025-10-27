@@ -1,8 +1,8 @@
 // App.tsx
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Products from "./pages/Products";
+import Home from "./pages/Home/Home";
+import About from "./pages/About/About";
+import Products from "./pages/Products/Products";
 import Cart from "./pages/Cart/Cart";
 import OrderConfirmation from "./pages/checkout/OrderConfirmation";
 import Checkout from "./pages/checkout/Checkout";
