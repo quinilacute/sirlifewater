@@ -1,6 +1,6 @@
 import Hero from "./Hero";
 import ProductList from "../../components/ProductList";
-import Delivery from "../../components/Dev";
+import Delivery from "../../components/Delivery";
 import News from "../../components/News";
 import Footer from "../../components/Footer";
 

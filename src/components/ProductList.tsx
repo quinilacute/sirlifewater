@@ -1,14 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import products from "../data/products.json";
 import { useCart, type Product } from "../context/CartContext";
 
 function ProductList() {
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const { addToCart } = useCart();
+
+  useEffect(() => {
+    // detect if device supports touch
+    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   const handleAddToCart = (product: Product) => {
     addToCart({ ...product, quantity: 1 });
+    setHoveredProduct(null); // hide overlay after adding to cart
+  };
+
+  const handleProductClick = (productId: number) => {
+    // toggle overlay on mobile
+    if (hoveredProduct === productId) {
+      setHoveredProduct(null);
+    } else {
+      setHoveredProduct(productId);
+    }
   };
 
   return (
@@ -22,8 +38,15 @@ function ProductList() {
           <div
             key={product.id}
             className="relative group bg-white rounded-xl shadow-md hover:shadow-lg p-4 transition"
-            onMouseEnter={() => setHoveredProduct(product.id)}
-            onMouseLeave={() => setHoveredProduct(null)}
+            onMouseEnter={
+              !isTouchDevice ? () => setHoveredProduct(product.id) : undefined
+            }
+            onMouseLeave={
+              !isTouchDevice ? () => setHoveredProduct(null) : undefined
+            }
+            onClick={
+              isTouchDevice ? () => handleProductClick(product.id) : undefined
+            }
           >
             <div>
               <img

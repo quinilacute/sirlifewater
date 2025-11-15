@@ -1,66 +1,138 @@
+import { motion } from "framer-motion";
 import { Droplets, ThumbsUp, Leaf, Users } from "lucide-react";
+import Food1 from "../../assets/icons/food 1.png";
+import Certified from "../../assets/icons/certified 1.png";
+import Glass from "../../assets/images/glasscup (1).png";
+import Fast from "../../assets/icons/fast-delivery 1.png";
+import Wallet from "../../assets/icons/wallet.png";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 25 },
+  visible: { opacity: 1, y: 0 },
+};
 
 function Why() {
   return (
     <section className="bg-white py-20 px-6 md:px-20">
-      <div className="max-w-6xl mx-auto text-center">
+      <div className="max-w-6xl mx-auto text-left">
+
         {/* Heading */}
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+        <motion.h2
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          transition={{ duration: 0.5 }}
+          className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 text-center"
+        >
           Why Choose <span className="text-blue-600">SirLifeWater</span>?
-        </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto mb-12">
-          We go beyond hydration — delivering clean, safe, and refreshing water
-          you can trust every day.
-        </p>
+        </motion.h2>
 
-        {/* Reasons Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          {/* Item 1 */}
-          <div className="flex flex-col items-center bg-blue-50 p-8 rounded-2xl shadow hover:shadow-lg transition">
-            <Droplets className="w-12 h-12 text-blue-600 mb-4" />
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
-              100% Pure Water
-            </h3>
-            <p className="text-gray-600 text-sm">
-              Filtered through advanced purification systems for guaranteed
-              freshness.
-            </p>
-          </div>
+        <motion.p
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          transition={{ duration: 0.6 }}
+          className="text-gray-600 max-w-2xl mx-auto mb-12 text-center"
+        >
+          Delivering clean and safe table water to your home, office, and events.
+        </motion.p>
 
-          {/* Item 2 */}
-          <div className="flex flex-col items-center bg-orange-50 p-8 rounded-2xl shadow hover:shadow-lg transition">
-            <ThumbsUp className="w-12 h-12 text-orange-500 mb-4" />
+        {/* SMALLER BOXES – EXPAND ON LARGE SCREENS */}
+        <div className="grid grid-rows-1 md:grid-rows-2 gap-10 mb-12 w-fit">
+          
+          {/* ITEM 1 LEFT */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center bg-white p-6 sm:p-7 lg:p-8 rounded-2xl shadow hover:shadow-lg w-60 sm:w-64 lg:w-72"
+          >
+            <img src={Food1} className="w-12 h-12 mb-3" />
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
-              Quality You Can Taste
+              Pure and Safe Water
             </h3>
-            <p className="text-gray-600 text-sm">
-              Consistent mineral balance and natural taste loved by thousands.
+            <p className="text-gray-600 text-sm text-center">
+              Delivering clean and safe table water.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Item 3 */}
-          <div className="flex flex-col items-center bg-green-50 p-8 rounded-2xl shadow hover:shadow-lg transition">
-            <Leaf className="w-12 h-12 text-green-600 mb-4" />
+          {/* ITEM 2 RIGHT */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center bg-white p-6 sm:p-7 lg:p-8 rounded-2xl shadow hover:shadow-lg w-60 sm:w-64 lg:w-72"
+          >
+            <img src={Certified} className="w-12 h-12 mb-3" />
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
-              Eco-Friendly Packaging
+              Certified & Trusted
             </h3>
-            <p className="text-gray-600 text-sm">
-              We use recyclable bottles and promote green delivery methods.
+            <p className="text-gray-600 text-sm text-center">
+              Industry-approved quality guaranteed.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Item 4 */}
-          <div className="flex flex-col items-center bg-blue-100 p-8 rounded-2xl shadow hover:shadow-lg transition">
-            <Users className="w-12 h-12 text-blue-700 mb-4" />
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
-              Trusted by Communities
-            </h3>
-            <p className="text-gray-600 text-sm">
-              Thousands of satisfied homes and offices rely on our trusted
-              service.
-            </p>
-          </div>
         </div>
+
+        {/* CENTER GLASS IMAGE */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          className="flex justify-center mb-12"
+        >
+          <img
+            src={Glass}
+            className="w-50 sm:w-60 md:w-60 lg:w-83 drop-shadow-xl px-4"
+            alt="Glass Cup"
+          />
+        </motion.div>
+
+        {/* BOTTOM RIGHT ITEMS */}
+        <div className="grid grid-rows-1 md:grid-rows-2 gap-10 w-fit ml-auto">
+
+          {/* ITEM 3 LEFT */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center bg-white p-6 sm:p-7 lg:p-8 rounded-2xl shadow hover:shadow-lg w-60 sm:w-64 lg:w-72"
+          >
+            <img src={Fast} className="w-12 h-12 mb-3" />
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              Fast Delivery
+            </h3>
+            <p className="text-gray-600 text-sm text-center">
+              Seamless delivery straight to your doorstep.
+            </p>
+          </motion.div>
+
+          {/* ITEM 4 RIGHT */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center bg-white p-6 sm:p-7 lg:p-8 rounded-2xl shadow hover:shadow-lg w-60 sm:w-64 lg:w-72"
+          >
+            <img src={Wallet} className="w-12 h-12 mb-3" />
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              Flexible Payment Options
+            </h3>
+            <p className="text-gray-600 text-sm text-center">
+              Multiple payment options for convenience.
+            </p>
+          </motion.div>
+
+        </div>
+
       </div>
     </section>
   );

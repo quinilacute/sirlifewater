@@ -1,96 +1,57 @@
-// src/pages/checkout/UserDetailsForm.tsx
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import Hero from "../checkout/Hero";
+import UserDetailsForm from "../checkout/Forms";
+import Order from "../checkout/OrSum";
+import Pay from "../checkout/PayMetFo";
+import Dev from "../../components/Delivery"; // updated to match JSX
+import Footer from "../../components/Footer";
 
-interface UserInfo {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-}
+const Checkout: React.FC = () => {
+  const [deliveryCost, setDeliveryCost] = useState<number | null>(null);
+  const [deliveryDistance, setDeliveryDistance] = useState<string>("");
 
-const UserDetailsForm: React.FC = () => {
-  const [user, setUser] = useState<UserInfo>({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-  });
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem("sirlife_user");
-    if (savedUser) {
-      const userData = JSON.parse(savedUser);
-      setUser(userData);
-      setIsLoggedIn(true);
-    }
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUser((prev) => ({ ...prev, [name]: value }));
+  const handleDeliveryCostChange = (cost: number, distance: string) => {
+    setDeliveryCost(cost);
+    setDeliveryDistance(distance);
   };
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-3">
-        <h2 className="text-md font-bold text-gray-700 uppercase">
-          Buyer Info
-        </h2>
-        {!isLoggedIn && (
-          <p className="text-sm text-indigo-700 font-semibold cursor-pointer">
-            Signup Here
-          </p>
-        )}
+    <div className="flex flex-col min-h-screen bg-green-50 transition-all duration-700">
+      <Hero />
+
+      {/* User Details Form */}
+      <div className="px-6 md:px-12 my-6">
+        <UserDetailsForm onDeliveryCostChange={handleDeliveryCostChange} />
       </div>
 
-      <form className="grid grid-cols-1 gap-3">
-        <input
-          type="text"
-          name="name"
-          placeholder="First Name"
-          value={user.name}
-          onChange={handleChange}
-          className="border rounded-md p-2 text-sm"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={user.email}
-          onChange={handleChange}
-          className="border rounded-md p-2 text-sm"
-        />
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone Number"
-          value={user.phone}
-          onChange={handleChange}
-          className="border rounded-md p-2 text-sm"
-        />
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          value={user.address}
-          onChange={handleChange}
-          className="border rounded-md p-2 text-sm"
-        />
-        <input
-          type="text"
-          name="city"
-          placeholder="City / State"
-          value={user.city}
-          onChange={handleChange}
-          className="border rounded-md p-2 text-sm"
-        />
-      </form>
+      {/* Display delivery info */}
+      {deliveryCost !== null && (
+        <div className="px-6 md:px-12 mb-6 bg-white shadow-md rounded-md p-4">
+          <p className="text-gray-700">
+            Delivery Distance: <span className="font-semibold">{deliveryDistance}</span>
+          </p>
+          <p className="text-gray-700">
+            Delivery Cost: <span className="font-semibold">₦{deliveryCost.toFixed(2)}</span>
+          </p>
+        </div>
+      )}
+
+      {/* Order Summary */}
+      <div className="px-6 md:px-12 my-6">
+        <Order deliveryCost={deliveryCost ?? 0} distance={deliveryDistance} />
+      </div>
+
+      {/* Payment Method */}
+      <div className="px-6 md:px-12 my-6">
+        <Pay />
+      </div>
+
+      {/* Delivery Component */}
+      <Dev />
+
+      <Footer />
     </div>
   );
 };
 
-export default UserDetailsForm;
+export default Checkout;

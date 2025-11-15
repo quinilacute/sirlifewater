@@ -1,23 +1,31 @@
 import Navbar from "../../components/Nav";
+import Hero2 from "../../assets/images/hero2.png";
 
 function Hero() {
   return (
-    <section className="relative bg-gradient-to-r from-blue-600 to-blue-400 text-white min-h-screen flex flex-col">
-      {/* Navbar on top */}
-      <Navbar />
+    <section className="w-full flex flex-col">
+      {/* Top Banner / Hero Background */}
+      <div
+        className="relative flex flex-col bg-cover bg-center bg-no-repeat h-[60vh] md:h-[70vh]" 
+        style={{
+          backgroundImage: `url(${Hero2})`,
+        }}
+      >
+        
 
-      {/* Hero content */}
-      <div className="flex flex-col items-center justify-center flex-1 text-center px-6 md:px-12">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">
-          Pure Water. Pure Life. 💧
-        </h1>
-        <p className="text-lg md:text-xl mb-8 max-w-2xl">
-          Experience the freshness of nature with SirLifeWater — delivered right
-          to your doorstep.
-        </p>
-        <button className="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition">
-          Shop Now
-        </button>
+        {/* Navbar */}
+        <div className="absolute top-4 z-20 w-full">
+          <Navbar />
+        </div>
+
+        {/* Hero Text */}
+       <div className="relative z-20 flex-1 flex items-start px-6 pt-20 md:pt-24">
+  <h1 className="text-3xl md:text-4xl font-bold text-blue-500">
+    Checkout
+  </h1>
+</div>
+
+
       </div>
     </section>
   );

@@ -11,10 +11,10 @@ function Nav() {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <nav className="bg-white shadow-md fixed top-0 w-full z-50">
+    <nav className="bg-blue-540 shadow-md fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-blue-600">
+        <Link to="/" className="text-2xl font-bold ">
           SirLife<span className="text-orange-500">Water</span>
         </Link>
 

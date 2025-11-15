@@ -8,7 +8,6 @@ import OrderConfirmation from "./pages/checkout/OrderConfirmation";
 import Checkout from "./pages/checkout/Checkout";
 import LoginSignup from "./pages/LoginSignup";
 import Dashboard from "./pages/Dashboard";
-
 import FAQ from "./pages/AboutFAQ";
 
 function App() {

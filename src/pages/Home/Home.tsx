@@ -1,5 +1,5 @@
 // import React from "react";
-import Delivery from "../../components/Dev";
+import Delivery from "../../components/Delivery";
 import Hero from "../Home/Hero";
 import Testi from "../Home/Testi";
 import Why from "../Home/Why";

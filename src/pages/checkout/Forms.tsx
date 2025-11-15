@@ -41,8 +41,8 @@ const UserDetailsForm: React.FC<UserDetailsFormProps> = ({ onDeliveryCostChange 
   };
 
   const handleCalculateDelivery = async () => {
-    if (!user.address && !user.city) {
-      alert("Please enter your address and city.");
+    if (!user.address || !user.city) {
+      alert("Please signup/login.");
       return;
     }
 
@@ -52,7 +52,6 @@ const UserDetailsForm: React.FC<UserDetailsFormProps> = ({ onDeliveryCostChange 
     try {
       const { distanceText, deliveryCost } = await getDeliveryCost(fullAddress);
       onDeliveryCostChange(deliveryCost, distanceText);
-      alert(`Distance: ${distanceText}\nDelivery Cost: ₦${deliveryCost.toFixed(2)}`);
     } catch (error) {
       console.error(error);
       alert("Unable to calculate delivery cost. Try again later.");
@@ -62,68 +61,76 @@ const UserDetailsForm: React.FC<UserDetailsFormProps> = ({ onDeliveryCostChange 
   };
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-3">
-        <h2 className="text-md font-bold text-gray-700 uppercase">Buyer Info</h2>
-        {!isLoggedIn && (
-          <p className="text-sm text-indigo-700 font-semibold cursor-pointer">
-            Signup Here
-          </p>
-        )}
-      </div>
+    <div className="bg-white p-6 rounded-md shadow-md border border-black">
+  <div className="flex justify-between items-center mb-2">
+    <h2 className="text-md font-bold text-gray-700 uppercase">Buyer Info</h2>
+    
+  </div>
 
-      <form className="grid grid-cols-1 gap-3">
-        <input
-          type="text"
-          name="name"
-          placeholder="First Name"
-          value={user.name}
-          onChange={handleChange}
-          className="border rounded-md p-2 text-sm"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={user.email}
-          onChange={handleChange}
-          className="border rounded-md p-2 text-sm"
-        />
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone Number"
-          value={user.phone}
-          onChange={handleChange}
-          className="border rounded-md p-2 text-sm"
-        />
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          value={user.address}
-          onChange={handleChange}
-          className="border rounded-md p-2 text-sm"
-        />
-        <input
-          type="text"
-          name="city"
-          placeholder="City / State"
-          value={user.city}
-          onChange={handleChange}
-          className="border rounded-md p-2 text-sm"
-        />
-      </form>
+  {/* Horizontal line under Buyer Info */}
+  <hr className="border-t-2 border-black -mx-6 mb-4" />
 
-      <button
-        type="button"
-        onClick={handleCalculateDelivery}
-        disabled={loading}
-        className="mt-4 bg-indigo-900 text-white py-2 rounded-md w-full hover:bg-indigo-800 transition"
-      >
-        {loading ? "Calculating..." : "Calculate Delivery Cost"}
-      </button>
-    </div>
+
+   {/* Signup link */}
+  {!isLoggedIn && (
+    <p className="text-sm text-indigo-700 font-semibold cursor-pointer mb-4 text-right">
+      Signup Here
+    </p>
+  )}
+
+  <form className="grid grid-cols-1 gap-3">
+    <input
+      type="text"
+      name="name"
+      placeholder="First Name"
+      value={user.name}
+      onChange={handleChange}
+      className="border rounded-md p-2 text-sm"
+    />
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      value={user.email}
+      onChange={handleChange}
+      className="border rounded-md p-2 text-sm"
+    />
+    <input
+      type="text"
+      name="phone"
+      placeholder="Phone Number"
+      value={user.phone}
+      onChange={handleChange}
+      className="border rounded-md p-2 text-sm"
+    />
+    <input
+      type="text"
+      name="address"
+      placeholder="Address"
+      value={user.address}
+      onChange={handleChange}
+      className="border rounded-md p-2 text-sm"
+    />
+    <input
+      type="text"
+      name="city"
+      placeholder="City / State"
+      value={user.city}
+      onChange={handleChange}
+      className="border rounded-md p-2 text-sm"
+    />
+  </form>
+
+  <button
+    type="button"
+    onClick={handleCalculateDelivery}
+    disabled={loading}
+    className="mt-4 bg-indigo-900 text-white py-2 rounded-md w-full hover:bg-indigo-800 transition"
+  >
+    {loading ? "Calculating..." : "Calculate Delivery Cost"}
+  </button>
+</div>
+
   );
 };
 
