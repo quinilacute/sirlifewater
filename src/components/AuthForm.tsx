@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 interface AuthFormProps {
@@ -13,6 +14,7 @@ function AuthForm({ isSignUp }: AuthFormProps) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,10 +27,21 @@ function AuthForm({ isSignUp }: AuthFormProps) {
       } else {
         await login(email, password);
       }
+      navigate("/"); // Redirect to home
     } catch (err: any) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    try {
+      await loginWithGoogle();
+      navigate("/"); // Redirect to home
+    } catch (err: any) {
+      setError(err.message || "Something went wrong with Google login");
     }
   };
 
@@ -48,7 +61,6 @@ function AuthForm({ isSignUp }: AuthFormProps) {
 
       {/* Auth Form */}
       <form onSubmit={handleSubmit} className="space-y-4 text-left">
-        {/* Signup extra fields */}
         {isSignUp && (
           <>
             <div>
@@ -76,7 +88,6 @@ function AuthForm({ isSignUp }: AuthFormProps) {
           </>
         )}
 
-        {/* Email */}
         <div>
           <label className="text-sm text-gray-600">Email Address</label>
           <input
@@ -89,7 +100,6 @@ function AuthForm({ isSignUp }: AuthFormProps) {
           />
         </div>
 
-        {/* Password */}
         <div>
           <label className="text-sm text-gray-600">Password</label>
           <input
@@ -102,7 +112,6 @@ function AuthForm({ isSignUp }: AuthFormProps) {
           />
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}
@@ -112,11 +121,7 @@ function AuthForm({ isSignUp }: AuthFormProps) {
               : "bg-orange-500 hover:bg-orange-600"
           }`}
         >
-          {loading
-            ? "Processing..."
-            : isSignUp
-            ? "Sign Up"
-            : "Sign In"}
+          {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
         </button>
       </form>
 
@@ -124,14 +129,10 @@ function AuthForm({ isSignUp }: AuthFormProps) {
       <div className="mt-6">
         <p className="text-gray-500 mb-3 text-sm">or continue with</p>
         <button
-          onClick={loginWithGoogle}
+          onClick={handleGoogleLogin}
           className="flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 px-4 w-full hover:bg-gray-100 transition"
         >
-          <img
-            src="/google-icon.svg"
-            alt="Google"
-            className="w-5 h-5"
-          />
+          <img src="/google-icon.svg" alt="Google" className="w-5 h-5" />
           <span className="text-gray-700 font-medium">Sign in with Google</span>
         </button>
       </div>

@@ -7,7 +7,7 @@ const LoginSignup: React.FC = () => {
   const togglePanel = () => setIsSignUp((prev) => !prev);
 
   return (
-    <div className="flex flex-col md:flex-row h-screen transition-all duration-700 overflow-hidden">
+    <div className="flex flex-col md:flex-row min-h-screen transition-all duration-700">
       {/* Left / Right Gradient Panel */}
       <div
         className={`flex-1 flex items-center justify-center p-10 text-white transition-all duration-700 ease-in-out ${
@@ -21,7 +21,7 @@ const LoginSignup: React.FC = () => {
 
       {/* Form Section */}
       <div
-        className={`flex-1 flex items-center justify-center bg-gray-50 transition-all duration-700 ease-in-out ${
+        className={`flex-1 flex items-start justify-center bg-gray-50 transition-all duration-700 ease-in-out overflow-y-auto p-10 ${
           isSignUp ? "md:order-1" : ""
         }`}
       >

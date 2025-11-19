@@ -1,39 +1,35 @@
-import { useMemo, useState } from "react";
-import { useCart } from "../../context/CartContext";
-import { Link } from "react-router-dom";
+import React from "react";
+import { useCart, Product } from "../../context/CartContext";
 
-const Summary = () => {
-  const { cartItems } = useCart();
-  const [deliveryFee, setDeliveryFee] = useState<number>(0);
-  const subtotal = useMemo(() => cartItems.reduce((s, i) => s + i.price * i.quantity, 0), [cartItems]);
-  const total = subtotal + deliveryFee;
+const Summary: React.FC = () => {
+  const { cart } = useCart();
 
-  // Example: set flat delivery or integrate distance later
-  const calcDelivery = () => {
-    // placeholder; replace with distance matrix logic when ready
-    setDeliveryFee(1000);
-  };
+  const subtotal = cart.reduce(
+    (sum: number, item: Product) => sum + (item.price * (item.quantity || 1)),
+    0
+  );
+
+  const shipping = subtotal > 0 ? 2000 : 0; // example flat shipping
+  const total = subtotal + shipping;
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md">
-      <h2 className="text-xl font-bold mb-4 text-blue-700">Order Summary</h2>
-
-      <div className="flex justify-between mb-2"><span>Subtotal</span><span>₦{subtotal.toLocaleString()}</span></div>
-      <div className="flex justify-between mb-4">
-        <span>Delivery</span>
-        <span>{deliveryFee ? `₦${deliveryFee.toLocaleString()}` : "—"}</span>
+    <div className="bg-white p-6 rounded-xl shadow-md space-y-4">
+      <h2 className="text-xl font-bold">Order Summary</h2>
+      <div className="flex justify-between">
+        <span>Subtotal:</span>
+        <span>₦{subtotal.toLocaleString()}</span>
       </div>
-
-      <button onClick={calcDelivery} className="w-full bg-yellow-500 py-2 rounded mb-4 hover:bg-yellow-600">Calculate Delivery</button>
-
-      <div className="flex justify-between font-semibold text-lg mb-4">
-        <span>Total</span>
+      <div className="flex justify-between">
+        <span>Shipping:</span>
+        <span>₦{shipping.toLocaleString()}</span>
+      </div>
+      <div className="flex justify-between font-semibold">
+        <span>Total:</span>
         <span>₦{total.toLocaleString()}</span>
       </div>
-
-      <Link to="/checkout" className="block text-center bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+      <button className="w-full mt-4 py-2 bg-blue-600 text-white rounded-md">
         Proceed to Checkout
-      </Link>
+      </button>
     </div>
   );
 };
