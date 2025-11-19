@@ -11,8 +11,9 @@ import {
   updateProfile,
   User as FirebaseUser,
 } from "firebase/auth";
-import app from "../firebase";
+import app from "../firebase"; // make sure this exports your Firebase app
 
+// 1️⃣ Define the shape of the Auth context
 interface AuthContextType {
   user: FirebaseUser | null;
   signup: (email: string, password: string, name?: string, number?: string) => Promise<void>;
@@ -21,16 +22,20 @@ interface AuthContextType {
   logout: () => Promise<void>;
 }
 
+// 2️⃣ Create context
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+// 3️⃣ Provide the context
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const auth = getAuth(app);
   const [user, setUser] = useState<FirebaseUser | null>(null);
 
+  // 4️⃣ Listen to auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
-      // Save basic info for checkout auto-fill
+
+      // Save minimal info for checkout autofill
       if (firebaseUser) {
         localStorage.setItem(
           "sirlife_user",
@@ -43,24 +48,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem("sirlife_user");
       }
     });
+
     return () => unsubscribe();
   }, [auth]);
 
+  // 5️⃣ Sign up
   const signup = async (email: string, password: string, name?: string, number?: string) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const currentUser = userCredential.user;
-    if (name) await updateProfile(currentUser, { displayName: name });
+
+    if (name) {
+      await updateProfile(currentUser, { displayName: name });
+    }
+
     if (number) localStorage.setItem("userPhone", number);
   };
 
+  // 6️⃣ Login
   const login = async (email: string, password: string) => {
     await signInWithEmailAndPassword(auth, email, password);
   };
 
+  // 7️⃣ Login with Google
   const loginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
     const firebaseUser = result.user;
+
     localStorage.setItem(
       "sirlife_user",
       JSON.stringify({
@@ -70,6 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  // 8️⃣ Logout
   const logout = async () => {
     await signOut(auth);
     localStorage.removeItem("sirlife_user");
@@ -81,12 +96,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
+// 9️⃣ Custom hook to use Auth
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
-}
+};
 
 export default AuthContext;

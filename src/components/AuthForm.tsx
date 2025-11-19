@@ -6,7 +6,7 @@ interface AuthFormProps {
   isSignUp: boolean;
 }
 
-function AuthForm({ isSignUp }: AuthFormProps) {
+const AuthForm: React.FC<AuthFormProps> = ({ isSignUp }) => {
   const { signup, login, loginWithGoogle } = useAuth();
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
@@ -132,12 +132,16 @@ function AuthForm({ isSignUp }: AuthFormProps) {
           onClick={handleGoogleLogin}
           className="flex items-center justify-center gap-2 border border-gray-300 rounded-md py-2 px-4 w-full hover:bg-gray-100 transition"
         >
-          <img src="/google-icon.svg" alt="Google" className="w-5 h-5" />
+          <img
+            src="/google-icon.png" // ✅ Public folder reference
+            alt="Google"
+            className="w-5 h-5"
+          />
           <span className="text-gray-700 font-medium">Sign in with Google</span>
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default AuthForm;

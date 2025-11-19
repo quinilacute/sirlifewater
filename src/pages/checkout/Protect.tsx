@@ -1,20 +1,19 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 interface Props {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
-const ProtectedRoute: React.FC<Props> = ({ children }) => {
+const ProtectedRoute = ({ children }: Props) => {
   const { user } = useAuth();
   const location = useLocation();
 
   if (!user) {
-    // Pass the current location so login can redirect back
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
