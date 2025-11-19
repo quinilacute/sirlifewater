@@ -35,7 +35,7 @@ const FAQ: React.FC = () => {
     {
       question: "What payment methods are accepted?",
       answer:
-        "We accept Paystack payments (cards, transfers, and mobile money) for your convenience.",
+        "We accept Paystack payments (cards, transfers, and mobile money) and direct card deduction for your convenience.",
     },
   ];
 
@@ -44,35 +44,39 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-16 px-6 md:px-20">
+    <div className="min-h-screen bg-gradient-to-b from-gray-700 to-blue-700 flex flex-col items-center py-20 px-6 md:px-20">
       {/* Return Button */}
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-blue-600 font-medium mb-6 hover:text-blue-800 transition"
+        className="flex items-center gap-2 text-red-700 font-medium mb-8 hover:text-white transition"
       >
         <ArrowLeft size={30} />
-       
       </button>
 
       {/* Page Title */}
-      <h1 className="text-3xl md:text-4xl font-bold text-blue-600 mb-10 text-center">
+      <h1 className="text-4xl md:text-5xl font-extrabold text-[#150448] mb-3 text-center">
         Frequently Asked Questions
       </h1>
+
+      <p className="text-gray-600 text-center max-w-xl mb-12">
+        Everything you need to know about SirLifeWater — from ordering to delivery.
+      </p>
 
       {/* FAQ List */}
       <div className="max-w-3xl w-full space-y-4">
         {faqs.map((faq, index) => (
           <div
             key={index}
-            className="bg-white shadow-md rounded-xl border border-gray-100"
+            className="bg-white shadow-lg rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300"
           >
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full flex justify-between items-center text-left px-6 py-4 focus:outline-none"
+              className="w-full flex justify-between items-center text-left px-6 py-5"
             >
-              <h2 className="text-lg md:text-xl font-semibold text-gray-800">
+              <h2 className="text-lg md:text-xl font-semibold text-[#150448]">
                 {faq.question}
               </h2>
+
               {openIndex === index ? (
                 <ChevronUp className="text-blue-600" />
               ) : (
@@ -81,7 +85,7 @@ const FAQ: React.FC = () => {
             </button>
 
             {openIndex === index && (
-              <div className="px-6 pb-4 text-gray-600 animate-fadeIn">
+              <div className="px-6 pb-6 text-gray-600 animate-[fadeIn_0.3s_ease] leading-relaxed">
                 {faq.answer}
               </div>
             )}

@@ -11,24 +11,25 @@ const Delivery: React.FC = () => {
           backgroundImage: `url(${Deli})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
+          filter: "brightness(0.7)",
           zIndex: 0,
         }}
       />
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-[#150448] opacity-80 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#150448]/80 to-[#150448]/80 z-10" />
 
       {/* Content */}
-      <div className="relative z-20 max-w-6xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-          Water Delivery 20k.m.Free <br />Service
+      <div className="relative z-20 max-w-4xl mx-auto text-center">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-snug">
+          Water Delivery <span className="text-blue-400">20km Free Service</span>
         </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto mb-12">
-          Experience seamless doorstep water delivery designed for <br /> your
-          convenience — quick, safe, and eco-friendly.
+        <p className="text-gray-200 text-lg md:text-xl mb-12 leading-relaxed">
+          Experience seamless doorstep water delivery designed for your convenience. 
+          Quick, safe, and eco-friendly — we bring hydration directly to you.
         </p>
-        <button className="bg-blue-600 text-white px-6 py-3 rounded-lg">
-          cgfyfyk
+        <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition-all duration-300">
+          Order Now
         </button>
       </div>
     </section>

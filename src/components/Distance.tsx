@@ -1,58 +1,68 @@
 import { useState } from "react";
 
-const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
-const factoryLocation = "Itu, Akwa Ibom, Nigeria";
+const orsApiKey = import.meta.env.VITE_ORS_API_KEY as string;
 
-// Define TypeScript types for the Google Maps Distance Matrix API response
-interface DistanceMatrixResponse {
-  rows: {
-    elements: {
-      distance: {
-        text: string;
-        value: number;
-      };
-      status: string;
-    }[];
-  }[];
-}
+const factoryCoords = {
+  lat: 5.0333,  // Itu, Akwa Ibom coordinates
+  lng: 7.9167
+};
 
 function Distance() {
-  const [origin, setOrigin] = useState<string>("");
-  const [distance, setDistance] = useState<string>("");
-  const [cost, setCost] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [origin, setOrigin] = useState("");
+  const [distance, setDistance] = useState("");
+  const [cost, setCost] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const getDistance = async () => {
-    if (!origin) return alert("Please enter your location");
+    if (!origin) return alert("Enter your location.");
     setLoading(true);
 
     try {
-      const proxyUrl = "https://thingproxy.freeboard.io/fetch/";
-      const targetUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(
-        origin
-      )}&destinations=${encodeURIComponent(
-        factoryLocation
-      )}&units=metric&key=${apiKey}`;
+      // Convert user's typed location → Coordinates
+      const geoRes = await fetch(
+        `https://api.openrouteservice.org/geocode/search?api_key=${orsApiKey}&text=${encodeURIComponent(
+          origin
+        )}`
+      );
 
-      const response = await fetch(proxyUrl + targetUrl);
-      const data: DistanceMatrixResponse = await response.json();
+      const geoData = await geoRes.json();
+      if (!geoData.features.length) throw new Error("Location not found");
 
-      if (data?.rows?.[0]?.elements?.[0]?.status !== "OK") {
-        throw new Error("Invalid response from API");
-      }
+      const userCoords = geoData.features[0].geometry.coordinates; // [lng, lat]
 
-      const distanceText = data.rows[0].elements[0].distance.text;
-      const distanceValue = data.rows[0].elements[0].distance.value / 1000; // km
-      const deliveryCost = distanceValue * 100; // ₦100 per km
+      // Calculate distance using ORS matrix API
+      const matrixRes = await fetch(
+        "https://api.openrouteservice.org/v2/matrix/driving-car",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: orsApiKey,
+          },
+          body: JSON.stringify({
+            locations: [
+              [userCoords[0], userCoords[1]], // user
+              [factoryCoords.lng, factoryCoords.lat], // you
+            ],
+            metrics: ["distance"],
+          }),
+        }
+      );
 
-      setDistance(distanceText);
+      const matrixData = await matrixRes.json();
+      const meters = matrixData.distances[0][1];
+      const km = meters / 1000;
+
+      const deliveryCost = km * 100; // N100 per km
+
+      setDistance(km.toFixed(2) + " km");
       setCost(`₦${deliveryCost.toFixed(2)}`);
-    } catch (error) {
-      console.error("Error fetching distance:", error);
-      alert("Failed to fetch distance. Try again later.");
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      alert("Couldn't calculate distance.");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -62,28 +72,23 @@ function Distance() {
       </h2>
 
       <input
-        type="text"
-        placeholder="Enter your location"
+        className="border p-2 rounded w-80"
         value={origin}
+        placeholder="Enter your location"
         onChange={(e) => setOrigin(e.target.value)}
-        className="border border-gray-300 rounded-md p-2 w-80"
       />
+
       <button
         onClick={getDistance}
-        className="ml-3 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-        disabled={loading}
+        className="ml-3 bg-blue-600 text-white px-4 py-2 rounded"
       >
         {loading ? "Calculating..." : "Get Distance"}
       </button>
 
       {distance && (
         <div className="mt-6 text-gray-700">
-          <p>
-            <strong>Distance:</strong> {distance}
-          </p>
-          <p>
-            <strong>Estimated Delivery Cost:</strong> {cost}
-          </p>
+          <p><strong>Distance:</strong> {distance}</p>
+          <p><strong>Estimated Cost:</strong> {cost}</p>
         </div>
       )}
     </section>

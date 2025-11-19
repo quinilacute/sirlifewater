@@ -1,24 +1,31 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ShoppingCart } from "lucide-react";
 import Navbar from "../../components/Nav";
+import Herobackground from "../../assets/images/hero.png";
 
 function Hero() {
+  const navigate = useNavigate();
+
   return (
-    <section className="relative bg-gradient-to-r from-blue-600 to-blue-400 text-white min-h-screen flex flex-col">
+    <section
+      className="relative bg-gradient-to-r from-blue-600 to-blue-400 text-white min-h-screen flex flex-col"
+      style={{
+        backgroundImage: ` url(${Herobackground})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       {/* Navbar on top */}
       <Navbar />
 
-      {/* Hero content */}
-      <div className="flex flex-col items-center justify-center flex-1 text-center px-6 md:px-12">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">
-          Pure Water. Pure Life. 💧
-        </h1>
-        <p className="text-lg md:text-xl mb-8 max-w-2xl">
-          Experience the freshness of nature with SirLifeWater — delivered right
-          to your doorstep.
-        </p>
-        <button className="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition">
-          Shop Now
-        </button>
-      </div>
+      
+      <h2
+       
+        className="absolute top-48 left-36 text-blue-600 p-3 text-3xl"
+      >
+       About Us
+      </h2>
     </section>
   );
 }

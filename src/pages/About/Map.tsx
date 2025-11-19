@@ -1,8 +1,13 @@
 import Distance from "../../components/Distance"; // adjust relative path
+import Line from "../../assets/icons/lines.png";
 
 function Map() {
   return (
     <section className="w-full bg-white py-16 px-6 md:px-20">
+     <div className="px-12 mx-auto text-center">
+       <h2>OUR LOCATION</h2>
+      <img src={Line} alt="" className="mx-auto" />
+     </div>
       {/* your map section */}
       <div className="w-full h-[400px] rounded-2xl overflow-hidden shadow-lg border">
         <iframe

@@ -16,7 +16,6 @@ function Footer() {
             <li><Link to="/contact">Contact us</Link></li>
             <li><Link to="/about" >About us</Link></li>
             <li><Link to="/delivery" >Delivery</Link></li>
-            <li><Link to="/info" >Information</Link></li>
             <li><Link to="/products" >Products</Link></li>
           </ul>
         </div>
@@ -27,7 +26,7 @@ function Footer() {
           <ul className="space-y-2 text-sm">
             <li><Link to="/account">My Account</Link></li>
             <li><Link to="/orders">Order History</Link></li>
-            <li><Link to="/newsletter" >Newsletter</Link></li>
+            <li><Link to="/news" >Newsletter</Link></li>
             <li><Link to="/policy">Policy</Link></li>
           </ul>
         </div>

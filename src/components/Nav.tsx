@@ -21,8 +21,8 @@ function Nav() {
         {/* Desktop Links */}
         <div className="hidden md:flex space-x-8 text-gray-700 font-medium items-center">
           <Link to="/">Home</Link>
-          <Link to="/products">Products</Link>
           <Link to="/about">About</Link>
+          <Link to="/products">Products</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/faq">FAQ</Link>
 
@@ -76,11 +76,11 @@ function Nav() {
           <Link to="/" onClick={closeMenu}>
             Home
           </Link>
-          <Link to="/products" onClick={closeMenu}>
-            Products
-          </Link>
           <Link to="/about" onClick={closeMenu}>
             About
+          </Link>
+          <Link to="/products" onClick={closeMenu}>
+            Products
           </Link>
           <Link to="/contact" onClick={closeMenu}>
             Contact

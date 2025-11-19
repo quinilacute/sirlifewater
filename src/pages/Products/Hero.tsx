@@ -11,36 +11,33 @@ function Hero() {
     <section
       className="relative bg-gradient-to-r from-blue-600 to-blue-400 text-white min-h-screen flex flex-col"
       style={{
-        backgroundImage: `linear-gradient(rgba(37, 99, 235, 0.7), rgba(96, 165, 250, 0.7)), url(${Herobackground})`,
+        backgroundImage: `url(${Herobackground})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* Navbar on top */}
+      {/* Navbar */}
       <Navbar />
 
-      {/* 🛒 Floating Cart Icon */}
+      {/* Page Title */}
+      <h2 className="absolute top-48 left-36 text-blue-600 p-3 text-3xl">
+        Our Product
+      </h2>
+
+      {/* Floating Cart Button */}
       <button
         onClick={() => navigate("/cart")}
-        className="absolute top-24 right-8 bg-white text-blue-600 p-3 rounded-full shadow-lg hover:bg-gray-100 transition"
-        aria-label="Go to Cart"
+        className="
+          fixed top-28 right-6 
+          bg-[#150448] text-white p-4 rounded-full 
+          shadow-xl hover:shadow-2xl 
+          hover:bg-blue-700 
+          transition-all duration-300 
+          flex items-center justify-center
+        "
       >
-        <ShoppingCart size={22} />
+        <ShoppingCart size={26} />
       </button>
-
-      {/* Hero content */}
-      <div className="flex flex-col items-center justify-center flex-1 text-center px-6 md:px-12">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">
-          Pure Water. Pure Life. 💧
-        </h1>
-        <p className="text-lg md:text-xl mb-8 max-w-2xl">
-          Experience the freshness of nature with SirLifeWater — delivered right
-          to your doorstep.
-        </p>
-        <button className="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition">
-          Shop Now
-        </button>
-      </div>
     </section>
   );
 }
